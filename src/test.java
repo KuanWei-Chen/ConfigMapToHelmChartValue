@@ -7,10 +7,11 @@ import java.util.*;
 public class test {
     public static void main(String[] args) {
         BufferedReader reader;
-        LayerDTO root = genDTO(new File("C:\\Users\\heisenberg\\Desktop\\TPI\\VN\\middle-asm-cd\\roles\\middle-bo-cl\\templates\\configmap.yml"));
+        LayerDTO root = genDTO(new File("D:\\TPI\\越南消金\\code\\tpi\\channel-asm-cd\\roles\\app-bff\\templates\\configmap.yml"));
         print(root, 0);
+        printToLinkByDot(root, "");
     }
-
+        // 將config map中用雙括號帶入的參數列出成yaml格式，方便填寫value
     public static LayerDTO genDTO(File file){
         BufferedReader reader;
         Map<String, LayerDTO>  layerDTOHashMap = new HashMap<>();
@@ -61,6 +62,21 @@ public class test {
             {
                 System.out.println(layerSpace+ key + ":");
                 print(layerDTO.childs.get(key), layerCount+1);
+            }
+        }
+    }
+    public static void printToLinkByDot(LayerDTO layerDTO, String preString){
+        StringBuilder layerSpace = new StringBuilder();
+        if(layerDTO!=null)
+        {
+            List<String> keySort = new ArrayList<>(layerDTO.childs.keySet());
+            Collections.sort(keySort);
+            if(keySort.isEmpty()) {
+                System.out.println(preString);
+            }else{
+                for (String key : keySort) {
+                    printToLinkByDot(layerDTO.childs.get(key), preString+ key);
+                }
             }
         }
     }
